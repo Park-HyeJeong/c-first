@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+void sort(int *number) 
+{
+	int i=0, j=0;
+	int temp;
+	for (i = 0; i < 5; i++) // number의 1~5까지 특정한 값을 정해주기 
+
+	{
+
+		for (j = i + 1; j < 5; j++) // number[i]와 number[i+1] 값들을 비교
+
+		{
+
+			if (number[i] > number[j]) 
+			// 비교해서 나온 최솟값을 number[i]에 넣어주기
+			{
+				temp = number[i];
+				number[i] = number[j];
+				number[j] = temp;
+			}
+		}
+	}
+}
+
+void print(int *number) 
+{
+	cout << "< 정렬 후 > " << endl << endl; //정렬 후 숫자들 출력
+	int i;
+	for (i = 0; i < 5; i++)  //number 1~5까지 출력
+		cout << i + 1 << ". " << number[i] << endl;
+}
+
+
+
+int main()
+{
+	int i;
+	int number[5];
+	cout << "숫자 다섯개를 입력해주세요. (띄어쓰기로 구분) >> ";
+	for (i = 0; i < 5; i++)    // 입력받을 숫자 5개
+		cin >> number[i];       // 입력받을 숫자를 배열로 
+	
+	//정렬 전 숫자 출력
+	cout << endl << "< 정렬 전 >" << endl << endl; 
+	for (i = 0; i < 5; i++) 
+		cout << i + 1 << ". " << number[i] << endl;
+	cout << endl << endl;
+
+	//sort()함수를 통해 숫자 불러오기
+	sort(number); 
+
+	//불러온 숫자 출력하기
+	print(number);
+
+}
