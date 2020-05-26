@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+void swap(int*a, int*b)
+{
+	// 변수의 값이 아닌, 변수의 주소를 요구하는 함수
+	int i;
+	i = *a;    // a가 가리키는 곳의 값을 i에 대입
+	*a = *b;   // *a 등에 붙은 별표는, 포인터 변수가 가리키는 값을 의미
+	*b = i;
+}
+
+int main()
+{
+	int j, k;   //첫 번째 수=j, 두 번째 수=k로 선언
+
+	cout << "first number >> ";   //첫 번째 수 입력받기
+	cin >> j;
+	cout << "second number >> ";   //두 번째 수 입력받기
+	cin >> k;
+	cout << "swap 전 >> " << j << " " << k << endl;  //전환 전 j,k값 출력
+
+	swap(&j, &k);         // 변수 j, k 의 주소에 의한 swap함수 호출	                      // a, b 가 포인터 변수가 아니기에, &를 붙여야 주소를 알 수 있음
+
+	cout << "swap 후 >> " << j <<" "<< k << endl;    //전환 후 j,k값 출력
+}
