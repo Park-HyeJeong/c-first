@@ -1,0 +1,17 @@
+#include <iostream>
+#include<algorithm>  //max함수와 min함수를 사용하기 위한 헤더파일 호출
+using namespace std;
+
+int a, b;  //입력받을 두 수 선언
+
+int main() {
+	cout << "두 수를 입력해주세요(띄어쓰기로 구분)>> ";  //먼저 출력될 문구
+	cin >> a;
+	cin >> b;
+	
+	cout << "큰 수 >> " << max(a,b) << endl;  //입력받은 두 수 a와 b 중 큰 수를 출력한다.
+
+	cout << "작은 수 >> " << min(a,b) << endl;  //입력받은 두 수 a와 b 중 작은 수를 출력한다.
+	return 0;   //그 후 0을 반환한다.
+
+}
