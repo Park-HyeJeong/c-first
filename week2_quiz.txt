@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	int i, j; //중첩for문 사용을 위한 변수
+
+	for (i = 0; i < 5; i++) //총 5줄 출력하니깐 0~4
+	{
+		for (j = 0; j < i + 1; j++) //밑으로 갈수록 한 개씩 별이 증가하므로
+		{
+			cout << "*";
+		}
+		cout << endl;
+	}
+	return 0;
+}

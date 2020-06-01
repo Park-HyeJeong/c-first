@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	std::cout << "First number>>> ";
+	float a;
+	std::cin >> a;
+
+	std::cout << "Second number>>> ";
+	float b;
+	std::cin >> b;
+
+	cout << "================계산결과=================" << '\n';
+	cout << a << "+" << b << "=" << a + b << '\n';
+	cout << a << "-" << b << "=" << a - b << '\n';
+	cout << a << "*" << b << "=" << a * b << '\n';
+	cout << a << "/" << b << "=" << a / b << '\n';
+}
