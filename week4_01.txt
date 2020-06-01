@@ -1,0 +1,59 @@
+#include<iostream> //rand(),srand()함수도 포함하는 헤더파일
+#include<ctime>  //time()함수 포함하는 헤더파일
+using namespace std;
+
+class random
+{
+public:
+	random(); //random 클래스의 random 멤버함수(객체가 생성되는 시점에서 자동으로 호출됨 = 생성자)
+	int numrange1(int x);  //범위 x부터 y까지의 범위 numrange 멤버함수(0~)
+	int numrange2(int x, int y); //범위 x부터 y까지의 범위 numrange 멤버함수(_~_)
+};
+random::random() //기본 생성자 함수 구현
+{
+	//srand()의 인수는 unsigned int형(즉, 부호가 정해지지 x)값이므로
+	//time()을 통해 호출된 값을 unsigned int형으로 변환해야함.
+	//이때 time()의 반환값은 1970.01.01~현재까지의 누적 시간(초)임
+	// 프로그램 실행할 때마다 새로운 값을 주는 방법은 srand()에 현재 시간(초)를 대입
+	// 그럼 rand()가 새로운 난수를 발생시킴
+	srand((unsigned)time(0)); 
+}
+
+//random클래스의 numrange1멤버함수 구현
+//0~32767을 위한 부분
+int random::numrange1(int x)  
+{
+	return rand() % (x+1);  //0부터 x사이의 수를 랜덤하게 리턴해줌.
+}
+
+//random클래스의 numrange 멤버함수 구현
+//2~4를 위한 부분
+int random::numrange2(int x, int y) 
+{
+	return rand() % (y - x + 1) + x; //x부터 y까지의 수를 랜덤하게 리턴해줌
+}
+
+
+int main() //실질적으로 출력되는 함수부분
+{
+	random r;  //이름이 r인 random타입의 객체 생성
+
+
+	//--0에서 ___까지의 랜점 정수 10개 --
+	cout << "-- 0에서 " << RAND_MAX << " 까지의 랜덤 정수 10개 --" << endl;
+	for (int i = 0; i < 10; ++i) //개수가 10개니깐 0~9까지 밑에 함수 반복
+	{
+		int n = r.numrange1(RAND_MAX); //0 ~ RAND_MAX(32767) 사이의 랜덤한 정수를 r로 하고 이를 n에 대입 
+		cout << n << ' ';  //' '에 n을 넣어 출력
+	}
+
+
+	//-- 2에서 4 까지의 랜덤 정수 10개 --
+	cout << endl << endl << "-- 2에서 " << "4 까지의 랜덤 정수 10개 --" << endl;
+	for (int i = 0; i < 10; i++) //개수가 10개니깐 0~9까지 밑에 함수 반복
+	{
+		int n = r.numrange2(2, 4);  //2~4사이의 랜덤한 정수를 r로 하고 이를 n에 대입
+		cout << n << ' ';  //' '에 n을 넣어 출력
+	}
+	cout << endl;
+}
