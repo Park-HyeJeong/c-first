@@ -1,0 +1,196 @@
+#include <iostream>
+#include <string>  //visual studio 버전이 구 버전이라 <string>헤더 파일을 포함해야 함.
+using namespace std;
+
+int c = 1500; //코카콜라 가격
+int v = 900; //비타500 가격
+int po = 2000; //파워에이드 가격
+int num; //메뉴 번호
+int su; //개수
+
+class VendingMachine
+{
+private:
+	string name; //음료이름
+	int price; //가격
+	int total; //음료 합산 값
+
+public:
+	VendingMachine() {}; //생성자
+	void purchase(double v1); //총 금액 출력, 지폐 입력, 거스름돈 출력
+	void menu(); //메뉴판
+	void newmenu(); // 새로운 메뉴판
+	string getName(); //메뉴명(매개변수) 
+	double getPrice(); //가격(매개변수)
+	double getTotal(); //총 가격(매개변수)
+	void setName(string n); //메뉴명 수정
+	void setPrice(int p); //가격 수정
+	void setTotal(int t); // 총 가격 수정
+	void su_price(); //수량*가격=총 가격
+};
+//모두 적용될 수 있도록 전역변수로 선언함.
+VendingMachine vm; // VendingMachine 클래스에 객체 vm 생성
+VendingMachine *p = &vm; //객체 vm을 가르키는 포인터 변수 p 선언
+
+
+//클래스 구현부
+void VendingMachine::purchase(double v1) ////총 금액 출력, 지폐 입력, 거스름돈 출력 함수
+{
+	int money, change; //입력할 가격(지불할 가격) => money// 거스름돈 => change// vi => 구입한 총 가격
+	cout << "총 금액 : " << v1 << endl; 
+	cout << "지폐를 입력하세요 : " ;  //반복되는 부분이 아니므로 while문에 들어가지 x
+	
+	while (1)
+	{
+		cin >> money; //"지폐를 입력하세요 : "에 대한 입력함수 부분 (지불할 가격은 상황에 따라 반복해서 입력해야 하므로 while문에 포함시킴)
+		change = money - v1; //change = 입력한 가격(지불 가격) - 구입한 총 가격 = 거스름 돈
+		int five = change / 500; //five변수 => 거스름돈을 500원으로 나눈 몫, 즉 잔돈 500원의 개수
+		int one = (change - five * 500) / 100; //one 변수 => (거스름돈 - 잔돈 500원의 개수*500원)/100 => 잔돈 500원을 거슬러 주고, 남은 거스름돈에서의 잔돈 100원 개수
+
+		if (change < 0) //입력한 값이 구입한 총 가격보다 작은 경우 => 지불을 덜 함
+		{
+			cout << endl << "금액이 부족합니다. 다시 넣어주세요. "; 
+			// 다시 위로 올라가 cin >> money를 출력함
+		}
+
+		else if (change == 0) // 입력한 값과 구입한 총 가격이 서로 같은 경우 => 알맞게 지불함
+		{
+			cout << endl << "거스름돈이 없습니다." << endl;
+			break; //while문 빠져나옴
+		}
+
+		else if(change > 0) //입력한 값이 구입한 총 가격보다 많은 경우 ==> 거스름돈을 받아야 함 
+		{
+			if (change % 100 == 0) //거스름돈을 100원으로 나누었을 때, 나머지가 0인 경우 ==> 10, 50원짜리가 없음
+			{
+				cout << "거스름돈 입니다" << endl;
+				cout << "500원 : " << five << "개" << endl; //잔돈 500원의 개수 출력
+				cout << "100원 : " << one << "개" << endl; //잔돈 100원의 개수 출력
+				break; //while문 빠져나옴
+			}
+			else //그 외에 경우 ==> 거스름 돈에 10,50원짜리가 있는 경우
+			{
+				cout << "거스름돈은 500원과 100원만 가능합니다." << endl;
+				cout << "500원 : " << five << "개" << endl;
+				cout << "100원 : " << one << "개" << endl;
+				break; //while문 빠져나옴
+			}
+		}
+	} cout << endl << "안녕히가세요." << endl;
+}
+
+
+void VendingMachine::menu() //처음에 띄우는 메뉴판 함수
+{
+	cout << "=== SWING 자판기 ===" << endl;
+	cout << "1. 코카콜라 : " << c << "원" << endl; 
+	cout << "2. 비타500 : " << v << "원" << endl;
+	cout << "3. 파워에이드 : " << po << "원" << endl;
+	cout << "4. 준비 중" << endl;
+	cout << "5. 계산" << endl;
+}
+
+
+void VendingMachine::newmenu() //새로 리뉴얼된 메뉴판 함수 => 4번 입력 후, 나타나는 메뉴판
+{
+	cout << "=== SWING 자판기 ===" << endl;
+	cout << "1. 코카콜라 : " << c << "원" << endl;
+	cout << "2. 비타500 : " << v << "원" << endl;
+	cout << "3. 파워에이드 : " << po << "원" << endl;
+	cout << "4. "<< name <<" : "<< price << "원" << endl; //입력한 메뉴명과 가격을 출력하도록 함
+	cout << "5. 계산" << endl;
+}
+
+
+
+string VendingMachine::getName() //추가할 메뉴명을 받는 함수
+{
+	cout << "추가할 음료 이름을 입력해주세요 : ";
+	getline(cin,name); //문자열을 끝까지 받기 위해 getline함수 사용
+	return name; //입력 받은 메뉴명을 반환값으로 지정
+}
+
+
+
+double VendingMachine::getPrice() //추가할 메뉴의 판매 가격을 받는 함수
+{
+	cout << "판매할 가격을 입력하세요 : ";
+	cin >> price; 
+	return price; //입력 받은 가격을 반환값으로 지정
+}
+
+
+double VendingMachine::getTotal() //총 구매 가격을 받는 함수
+{
+	return total;
+}
+
+
+void VendingMachine::setName(string n) //새로운 메뉴명으로 수정하는 함수
+{
+	name = n;
+}
+
+void VendingMachine::setPrice(int p) //새로운 메뉴의 가격을 수정하는 함수
+{
+	price = p;
+}
+
+void VendingMachine::setTotal(int t) //총 구매 가격을 계산하는 함수
+{
+	total += t;
+}
+
+
+void VendingMachine::su_price() //구매한 수량 * 판매 가격 = 총 구매 가격 구하는 함수 중 일부
+{
+	switch (num) //메뉴에 따라 수량 * 판매 가격 구하기
+	{
+	case 1: //코카콜라
+		cout << "구매할 수 있는 수량을 입력해주세요 : ";
+		cin >> su;
+		p->setTotal(su * c); //포인터변수 p가 클래스 함수 setTotal을 가리킴으로써 구매가격을 매개변수로 지정 
+		break; //switch문 빠져나감
+	case 2: //파워에이드
+		cout << "구매할 수 있는 수량을 입력해주세요 : ";
+		cin >> su;
+		p->setTotal(su * po);
+		break;
+	case 3://비타500
+		cout << "구매할 수 있는 수량을 입력해주세요 : ";
+		cin >> su;
+		p->setTotal(su * v);
+		break;
+	case 4://새로운 메뉴
+		cout << "구매할 수 있는 수량을 입력해주세요 : ";
+		cin >> su;
+		p->setTotal(su * price);
+		break;
+	}
+}
+
+
+
+int main(void) //메인 코드 부분
+{
+	vm.menu(); //처음에 띄우는 메뉴판 함수 실행
+
+	//포인터 변수p가 클래스 함수 setName을 가리킴으로써 제품이름을 setName의 매개변수로 받아 메뉴명을 수정
+	p->setName(vm.getName()); 
+
+	//포인터 변수p가 클래스 함수 setPrice를 가리킴으로써 제품가격을 setPrice의 매개변수로 받아 제품가격을 수정
+	p->setPrice(vm.getPrice());
+
+	do
+	{
+		vm.newmenu(); //새로 갱신된 메뉴판 함수를 실행함
+		cout << endl << "번호를 선택해주세요 : "; //메뉴 선택
+		cin >> num;
+		vm.su_price(); //수량*제품 가격 = 총 구매 가격을 다룬 함수 실행
+
+	} while (num != 5); //5번을 고르지 않는 이상, 계속 반복
+
+	cout << endl << "계산 중입니다. 기다려주세요 . . ." << endl << endl;
+
+	vm.purchase(vm.getTotal()); //총 금액 출력, 지폐 입력, 거스름돈 출력 함수 실행
+}
