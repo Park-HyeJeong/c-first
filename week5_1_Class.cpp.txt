@@ -1,0 +1,37 @@
+#include <iostream>
+
+#include "Class.h"
+
+using namespace std;
+
+
+void Person::addPhone() // 입력한 전화번호 등록 함수 설정
+{
+	cout << "---swing 전화번호부---" << endl;
+	cout << "이름을 입력해 주세요 >> ";
+	cin >> name; //name(이름) 입력받기
+	cout << "전화번호를 입력해 주세요 >> ";
+	cin >> tel; //tel(전화번호) 입력받기
+}
+
+string Person::getName() { return name; } //getName()의 반환값을 name으로 지정
+string Person::getPnum() { return tel; } //getPnum()의 반환값을 tel로 지정
+
+
+void Person::editPhone() //전화번호 수정 함수 설정
+{
+	string n, t; //이름 = n, 전화번호 = t로 변수 지정
+	cout << "이름을 입력해 주세요 >> ";
+	cin >> n;
+	while (n != name) //기존에 있던 이름과 입력한 이름이 다를 때까지 계속 아래 함수 실행
+	{
+		//기존이름!=입력이름이면, 아래와 같은 문구 출력
+		cout << "존재하지 않는 연락처입니다. 다시 입력해 주세요 >> ";
+		cin >> n;
+	}
+	//기존이름=입력이름이면, 아래와 같은 문구 출력
+	cout << "변경할 전화번호를 입력해 주세요 >> ";
+	cin >> t;
+	tel = t; //입력받은 전화번호를 기존에 있던 전화번호에 대입
+	cout << endl;
+}

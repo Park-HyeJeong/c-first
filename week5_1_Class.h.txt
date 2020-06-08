@@ -1,0 +1,25 @@
+#ifndef PHONEBOOK_H
+
+#define PHONEBOOK_H
+
+#include <iostream>
+
+#include <string>
+
+using namespace std;
+
+
+
+class Person
+{
+private: //아무도 못 보게
+	string name; //문자열 변수, 이름
+	string tel;  //문자열 변수, 전화번호
+public: //모두가 볼 수 있게
+	void addPhone(); //입력한 전화번호 등록 함수
+	string getName(); //입력된 이름 불러오는 함수
+	string getPnum(); //입력된 전화번호 불러오는 함수
+	void editPhone(); //전화번호 수정 함수 	
+};
+
+#endif
