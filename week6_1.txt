@@ -1,0 +1,240 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class ATM {
+	string name;//계좌주 이름
+	int pw;//계좌 비번	
+	int pwch;//다시한번 입력한 계좌 비번
+	int money;//계좌 잔액
+
+public:
+	ATM();
+	int getMoney();//얼마있는지 출력
+	void deposit();//입금
+	void withdraw();//출금
+	void send(string receiver, int sendMon);//이체,받음
+	void receive(int receiveMon);//이체, 보냄
+	string getName();//이름 불러오기
+	void setName();//가입회원 이름
+	void setPw();//가입회원 비번
+	void setMoney();//가입회원 처음 입금금액
+	void pwch1();//가입 시, 입력한 비번과 일치하는 지 체크
+	void pwch2();//계좌 관련 활동 시 비번 체크
+};
+
+int main()
+{
+	string cusname = " ";//가입회원 이름
+	string receiver = " ";//받는 회원 이름
+	int index;//가입인원
+	int i, j;
+	int k = 100;//
+	int m = 100;
+	int number=0;//메뉴번호
+	int sendMoney;//보낼 금액
+
+	cout << "은행에 가입할 인원을 입력해주세요 >> ";
+	cin >> index;
+	ATM * pATM = new ATM[index];//인원 수만큼 객체 배열 동적 생성
+	for(i=0;i< index;i++)//인원 수만큼 가입과정 반복
+	{
+		cout << endl << i+1 << "번째 손님" << endl << endl;
+		cout << "성명을 적어주십시오 >> ";
+		(pATM + i)->setName();
+		cout << "비밀번호를 입력해주세요 >> ";
+		(pATM + i)->setPw();
+		cout << "한 번 더 입력해주세요 >> ";
+		(pATM + i)->pwch1();
+		cout << "입금할 금액을 입력해주세요>> ";
+		(pATM + i)->setMoney();
+		cout << endl;
+	}
+	while (1)//무한반복_1
+	{
+		while (1)//무한반복_2
+		{
+			cout << endl << "---SWING ATM---" << endl;
+			cout << "성함을 입력해주세요 (종료라면 x를 입력해주세요)>> ";
+			cin >> cusname;
+
+			if (cusname == "x")//가입회원 이름이 x면
+				break;//반복문 나옴(회원만의 프로그램 종료)
+
+			k = 100; //k값 초기화
+			for (j = 0; j < index; j++)
+			{
+				//가입회원과 계좌주 이름이 동일하면
+				if (cusname == (pATM + j)->getName())
+					k = j; //해당 인덱스 값을 k에 대입
+			}
+			//k값 선언(존재않는 계좌주 문구를 출력하지 않도록)과 동시에 x가 입력되었을 시 아래 문구가 출력되지 않도록 함 
+			if (k == 100 && cusname != "x")
+				cout << "존재하지 않는 계좌주입니다." << endl;
+			else //올바른 계좌주를 입력하면 -> 메뉴선택으로
+				break;
+		}
+		//프로그램 종료
+		if (cusname == "x") //위에 while문을 탈출한 후, x가 입력된 상태면 제일 바깥쪽 while문을 탈출함
+			break;
+
+		number = 0;
+		
+		while (number != 5)//메뉴가 5가 아니면 반복
+		{
+			cout << endl << "---SWING ATM " << (pATM + k)->getName() << "님---" << endl;
+			cout << "1. 입금" << endl;
+			cout << "2. 인출" << endl;
+			cout << "3. 이체" << endl;
+			cout << "4. 잔액 확인" << endl;
+			cout << "5. 종료" << endl << endl;
+			cout << "번호를 선택해주세요 >> ";
+			cin >> number;
+
+			switch (number)
+			{
+			case 1://1.입금
+			{
+				cout << "입금할 금액을 입력해주세요 >> ";
+				(pATM + k)->deposit();
+				cout << endl << "현재 " << (pATM + k)->getName() << "님의 잔액은 " << (pATM + k)->getMoney() << "원 입니다." << endl;
+				break;
+			}
+
+			case 2://2.인출
+			{
+				cout << "얼마를 인출하시겠습니까? >> ";
+				(pATM + k)->withdraw();
+				cout << "비밀번호를 입력해주세요 >> ";
+				(pATM + k)->pwch2();
+				cout << endl << "현재 " << (pATM + k)->getName() << "님의 잔액은 " << (pATM + k)->getMoney() << "원 입니다." << endl;
+				break;
+			}
+
+			case 3://3.이체
+			{
+				cout << "누구에게 보내겠습니까? >> ";
+				cin >> receiver;
+
+				m = 100; // m값 초기화
+
+				for (int j = 0; j < index; j++)
+				{
+					if (receiver == (pATM + j)->getName())
+						m = j;
+					// 가입회원의 이름 = 작성한 이름이면, 해당 인덱스 값을 m에 대입
+				}
+
+				if (m == 100) //입력한 이름이 존재하지 않을 때
+					break;
+
+				cout << "얼마를 보내겠습니까? >> ";
+				cin >> sendMoney;
+				(pATM + k)->send((pATM + m)->getName(), sendMoney);
+				cout << "비밀번호를 입력해주세요 >> ";
+				(pATM + k)->pwch2();
+				cout << endl << (pATM + m)->getName() << "님께 " << sendMoney << "원을 보냈습니다." << endl;
+				(pATM + m)->receive(sendMoney);
+				cout << endl << "현재 " << (pATM + k)->getName() << "님의 잔액은 " << (pATM + k)->getMoney() << "원 입니다." << endl;
+				break;
+			}
+
+			case 4://4.잔액확인
+			{
+				cout << (pATM + k)->getName() << "님의 현재 잔액은 " << (pATM + k)->getMoney() << "원 입니다." << endl;
+				break;
+			}
+
+			case 5://프로그램 종료
+				break;
+			}
+		}
+	}
+	cout << "ATM을 종료합니다." << endl;
+	return 0;
+}
+
+ATM::ATM()
+{};
+
+int ATM::getMoney()//잔액 출력
+{
+	return money;
+}
+
+void ATM::deposit()//입금
+{
+	int plus;
+	cin >> plus;
+	money += plus;
+}
+
+void ATM::withdraw()//인출
+{
+	int minus;
+	cin >> minus;
+	money -= minus;
+}
+
+void ATM::send(string receiver, int sendMon)//이체,받음
+{
+	money -= sendMon;
+}
+
+void ATM::receive(int receiveMon)//이체,보냄
+{
+	money += receiveMon;
+}
+
+string ATM::getName()//가입회원 이름 불러오기
+{
+	return name;
+}
+
+void ATM::setName()//가입할 회원 이름 정하기
+{
+	cin >> name;
+}
+
+void ATM::setPw()//가입할 회원 비번 정하기
+{
+	cin >> pw;
+}
+
+void ATM::setMoney()//가입할 회원 입금금액 정하기
+{
+	cin >> money;
+}
+
+void ATM::pwch1()//가입과정 시, 비번 체크하기
+{
+	cin >> pwch;
+
+	if (pwch != pw)
+	{
+		while (pwch != pw)
+		{
+			cout << "비밀번호가 서로 다릅니다." << endl << endl;
+			cout << "비밀번호를 입력해주세요 >> ";
+			cin >> pwch;
+		}
+	}
+}
+
+void ATM::pwch2()//계좌활동 시, 비번 체크하기
+{
+	cin >> pwch;
+
+	if (pwch != pw)
+	{
+		while (pwch != pw)
+		{
+			cout << "비밀번호가 틀렸습니다." << endl;
+			cout << "비밀번호를 입력해주세요.>> ";
+			cin >> pwch;
+		}
+	}
+}
+
+
+
