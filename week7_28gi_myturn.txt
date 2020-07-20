@@ -1,0 +1,60 @@
+#include    <iostream>
+using namespace std;
+
+
+void printList(const int list[], const int length)
+{
+	for (int index = 0; index < length; ++index)
+		cout << list[index] << " ";
+	cout << endl;
+}
+
+
+int main()
+{
+	int length;//수열의 길이
+	int *list;//수열배열을 가리키는 포인터
+	
+	cout << "수열의 길이를 입력해주세요(4개이상 100개이하)>> ";
+	cin >> length; //length로 입력받은 값 받아오기
+	cout << endl << endl;
+
+	//수열의 길이만한 배열을 할당받아 주소를 list에 반환(배열 동적 할당)
+	list = new int[length];
+	
+
+	for (int i = 0; i < length; ++i)
+	{
+		cout << "수열을 입력해주세요(0이상 100이하)>> ";
+		cin >> list[i];
+		cout << endl;
+	}
+
+	printList(list, length);
+	
+	for (int startIndex = 0; startIndex < length - 1; ++startIndex)
+	{
+		int smalllestIndex = startIndex;
+
+		for (int currentIndex = startIndex + 1; currentIndex < length; ++currentIndex)
+		{
+			if (list[smalllestIndex] > list[currentIndex])
+			{
+				smalllestIndex = currentIndex;
+			}
+		}
+
+		//swap
+		//std::swap(list[smallestIndex],list[startIndex]);
+		{
+			int temp = list[smalllestIndex];
+			list[smalllestIndex] = list[startIndex];
+			list[startIndex] = temp;
+		}
+		printList(list, length);
+	}
+	cout << endl;
+	cout << "선택정렬이 완료되었습니다";
+	return 0;
+}
+
